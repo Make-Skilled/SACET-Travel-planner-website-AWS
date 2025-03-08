@@ -1,9 +1,8 @@
 package com.travelplanner.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -12,21 +11,17 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Full name is required")
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
     @Column(name = "full_name")
     private String fullName;
 
-    @NotBlank(message = "Email is required")
-    @Email(message = "Please provide a valid email address")
-    @Column(unique = true)
-    private String email;
-
-    @NotBlank(message = "Password is required")
-    @Size(min = 6, message = "Password must be at least 6 characters long")
-    private String password;
-
-    @Transient // This field won't be persisted in the database
-    private String confirmPassword;
+    @Column(name = "preferences")
+    private String preferences;
 
     // Getters and Setters
     public Long getId() {
@@ -35,14 +30,6 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
     }
 
     public String getEmail() {
@@ -61,11 +48,19 @@ public class User {
         this.password = password;
     }
 
-    public String getConfirmPassword() {
-        return confirmPassword;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getPreferences() {
+        return preferences;
+    }
+
+    public void setPreferences(String preferences) {
+        this.preferences = preferences;
     }
 } 
