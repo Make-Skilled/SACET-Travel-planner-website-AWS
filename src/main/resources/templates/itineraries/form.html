@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/main :: html}">
+<head>
+    <title th:text="${itinerary.id} ? 'Edit Itinerary' : 'New Itinerary'">Itinerary Form</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <!-- Back Navigation -->
+        <div class="mb-6">
+            <a href="/itineraries" class="text-blue-600 hover:text-blue-800 flex items-center">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+                Back to Itineraries
+            </a>
+        </div>
+
+        <!-- Form Card -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="p-8">
+                <h1 class="text-2xl font-bold text-gray-900 mb-6" 
+                    th:text="${itinerary.id} ? 'Edit Itinerary' : 'Create New Itinerary'">
+                    Itinerary Form
+                </h1>
+
+                <form th:action="@{/itineraries}" th:object="${itinerary}" method="post" class="space-y-6">
+                    <input type="hidden" th:field="*{id}">
+
+                    <!-- Basic Information -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Title Field -->
+                        <div class="col-span-2">
+                            <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+                            <input type="text" id="title" th:field="*{title}" required
+                                   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+
+                        <!-- Destination Field -->
+                        <div>
+                            <label for="destination" class="block text-sm font-medium text-gray-700">Destination</label>
+                            <select id="destination" th:field="*{destination}" required
+                                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                                <option value="">Select a destination</option>
+                                <option th:each="dest : ${destinations}"
+                                        th:value="${dest.id}"
+                                        th:text="${dest.name}">Destination Name</option>
+                            </select>
+                        </div>
+
+                        <!-- Travel Mode Field -->
+                        <div>
+                            <label for="travelMode" class="block text-sm font-medium text-gray-700">Travel Mode</label>
+                            <select id="travelMode" th:field="*{travelMode}" required
+                                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                                <option value="DRIVING">Driving</option>
+                                <option value="TRANSIT">Public Transit</option>
+                                <option value="WALKING">Walking</option>
+                                <option value="CYCLING">Cycling</option>
+                            </select>
+                        </div>
+
+                        <!-- Start Date Field -->
+                        <div>
+                            <label for="startDate" class="block text-sm font-medium text-gray-700">Start Date</label>
+                            <input type="date" id="startDate" th:field="*{startDate}" required
+                                   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+
+                        <!-- End Date Field -->
+                        <div>
+                            <label for="endDate" class="block text-sm font-medium text-gray-700">End Date</label>
+                            <input type="date" id="endDate" th:field="*{endDate}" required
+                                   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+
+                        <!-- Total Budget Field -->
+                        <div>
+                            <label for="totalBudget" class="block text-sm font-medium text-gray-700">Total Budget ($)</label>
+                            <input type="number" id="totalBudget" th:field="*{totalBudget}" step="0.01" required
+                                   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+
+                        <!-- Accommodation Field -->
+                        <div>
+                            <label for="accommodation" class="block text-sm font-medium text-gray-700">Accommodation</label>
+                            <select id="accommodation" th:field="*{accommodation}"
+                                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                                <option value="">Select accommodation</option>
+                                <option th:each="acc : ${accommodations}"
+                                        th:value="${acc.id}"
+                                        th:text="${acc.name}">Accommodation Name</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Description Field -->
+                    <div>
+                        <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                        <textarea id="description" th:field="*{description}" rows="4"
+                                  class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></textarea>
+                    </div>
+
+                    <!-- Preferences Field -->
+                    <div>
+                        <label for="preferences" class="block text-sm font-medium text-gray-700">Travel Preferences</label>
+                        <textarea id="preferences" th:field="*{preferences}" rows="3"
+                                  placeholder="Enter your travel preferences (e.g., food preferences, activity types, etc.)"
+                                  class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></textarea>
+                    </div>
+
+                    <!-- Days Section -->
+                    <div id="daysContainer" class="space-y-6">
+                        <h2 class="text-lg font-medium text-gray-900">Daily Schedule</h2>
+                        <div th:each="day, dayStat : *{days}" class="bg-gray-50 p-6 rounded-lg">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-md font-medium" th:text="'Day ' + ${dayStat.count}">Day</h3>
+                                <button type="button" onclick="removeDay(this)"
+                                        class="text-red-600 hover:text-red-800">Remove Day</button>
+                            </div>
+                            <input type="hidden" th:field="*{days[__${dayStat.index}__].dayNumber}" th:value="${dayStat.count}">
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Daily Budget ($)</label>
+                                    <input type="number" th:field="*{days[__${dayStat.index}__].dailyBudget}" step="0.01"
+                                           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Description</label>
+                                    <textarea th:field="*{days[__${dayStat.index}__].description}" rows="2"
+                                              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Notes</label>
+                                    <input type="text" th:field="*{days[__${dayStat.index}__].notes}"
+                                           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Add Day Button -->
+                    <div>
+                        <button type="button" onclick="addDay()"
+                                class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                            </svg>
+                            Add Day
+                        </button>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="flex justify-end">
+                        <button type="submit" 
+                                class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700">
+                            Save Itinerary
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for Dynamic Days Management -->
+    <script th:inline="javascript">
+        function addDay() {
+            const daysContainer = document.getElementById('daysContainer');
+            const dayCount = daysContainer.getElementsByClassName('bg-gray-50').length;
+            const newDayNumber = dayCount + 1;
+
+            const dayTemplate = `
+                <div class="bg-gray-50 p-6 rounded-lg mt-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-md font-medium">Day ${newDayNumber}</h3>
+                        <button type="button" onclick="removeDay(this)"
+                                class="text-red-600 hover:text-red-800">Remove Day</button>
+                    </div>
+                    <input type="hidden" name="days[${dayCount}].dayNumber" value="${newDayNumber}">
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Daily Budget ($)</label>
+                            <input type="number" name="days[${dayCount}].dailyBudget" step="0.01"
+                                   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Description</label>
+                            <textarea name="days[${dayCount}].description" rows="2"
+                                      class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Notes</label>
+                            <input type="text" name="days[${dayCount}].notes"
+                                   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            daysContainer.insertAdjacentHTML('beforeend', dayTemplate);
+        }
+
+        function removeDay(button) {
+            const dayElement = button.closest('.bg-gray-50');
+            dayElement.remove();
+            updateDayNumbers();
+        }
+
+        function updateDayNumbers() {
+            const days = document.querySelectorAll('#daysContainer .bg-gray-50');
+            days.forEach((day, index) => {
+                const dayNumber = index + 1;
+                day.querySelector('h3').textContent = `Day ${dayNumber}`;
+                day.querySelector('input[type="hidden"]').value = dayNumber;
+                
+                // Update all input names in this day
+                const inputs = day.querySelectorAll('input:not([type="hidden"]), textarea');
+                inputs.forEach(input => {
+                    const name = input.getAttribute('name');
+                    if (name) {
+                        input.setAttribute('name', name.replace(/days\[\d+\]/, `days[${index}]`));
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+</html> 

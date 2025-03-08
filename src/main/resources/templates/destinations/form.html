@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/main :: html}">
+<head>
+    <title th:text="${destination.id} ? 'Edit Destination' : 'New Destination'">Destination Form</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <!-- Back Navigation -->
+        <div class="mb-6">
+            <a href="/destinations" class="text-blue-600 hover:text-blue-800 flex items-center">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+                Back to Destinations
+            </a>
+        </div>
+
+        <!-- Form Card -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="p-8">
+                <h1 class="text-2xl font-bold text-gray-900 mb-6" 
+                    th:text="${destination.id} ? 'Edit Destination' : 'Add New Destination'">
+                    Destination Form
+                </h1>
+
+                <form th:action="@{/destinations}" th:object="${destination}" method="post" class="space-y-6">
+                    <input type="hidden" th:field="*{id}">
+
+                    <!-- Name Field -->
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                        <input type="text" id="name" th:field="*{name}" required
+                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+
+                    <!-- Location Field -->
+                    <div>
+                        <label for="location" class="block text-sm font-medium text-gray-700">Location</label>
+                        <input type="text" id="location" th:field="*{location}" required
+                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+
+                    <!-- Description Field -->
+                    <div>
+                        <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                        <textarea id="description" th:field="*{description}" rows="4"
+                                  class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></textarea>
+                    </div>
+
+                    <!-- Average Budget Field -->
+                    <div>
+                        <label for="averageBudget" class="block text-sm font-medium text-gray-700">Average Budget ($)</label>
+                        <input type="number" id="averageBudget" th:field="*{averageBudget}" step="0.01" required
+                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+
+                    <!-- Weather Field -->
+                    <div>
+                        <label for="weather" class="block text-sm font-medium text-gray-700">Weather</label>
+                        <input type="text" id="weather" th:field="*{weather}"
+                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+
+                    <!-- Attractions Field -->
+                    <div>
+                        <label for="attractions" class="block text-sm font-medium text-gray-700">Attractions</label>
+                        <textarea id="attractions" th:field="*{attractions}" rows="4"
+                                  class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></textarea>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="flex justify-end">
+                        <button type="submit" 
+                                class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700">
+                            Save Destination
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
