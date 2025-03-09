@@ -31,7 +31,7 @@ public class DestinationController {
     @GetMapping("/new")
     public String newDestinationForm(Model model) {
         model.addAttribute("destination", new Destination());
-        return "destinations/new";
+        return "destinations/form";
     }
 
     @PostMapping

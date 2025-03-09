@@ -34,7 +34,7 @@ public class ItineraryController {
     public String newItineraryForm(Model model) {
         model.addAttribute("itinerary", new Itinerary());
         model.addAttribute("destinations", destinationService.getAllDestinations());
-        return "itineraries/new";
+        return "itineraries/form";
     }
 
     @PostMapping

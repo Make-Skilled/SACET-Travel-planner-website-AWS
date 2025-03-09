@@ -34,7 +34,7 @@ public class TripRecommendationController {
     public String newRecommendationForm(Model model) {
         model.addAttribute("recommendation", new TripRecommendation());
         model.addAttribute("destinations", destinationService.getAllDestinations());
-        return "recommendations/new";
+        return "recommendations/form";
     }
 
     @PostMapping
