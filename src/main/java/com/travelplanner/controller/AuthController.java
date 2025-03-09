@@ -50,6 +50,8 @@ public class AuthController {
         try {
             User authenticatedUser = userService.authenticateUser(user.getEmail(), user.getPassword());
             session.setAttribute("user", authenticatedUser);
+            session.setAttribute("role", authenticatedUser.getRole());
+            System.out.println("Role: " + authenticatedUser.getRole());
             return "redirect:/home";
         } catch (RuntimeException e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());

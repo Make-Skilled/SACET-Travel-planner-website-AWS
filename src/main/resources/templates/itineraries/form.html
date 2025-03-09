@@ -79,18 +79,6 @@
                             <input type="number" id="totalBudget" th:field="*{totalBudget}" step="0.01" required
                                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                         </div>
-
-                        <!-- Accommodation Field -->
-                        <div>
-                            <label for="accommodation" class="block text-sm font-medium text-gray-700">Accommodation</label>
-                            <select id="accommodation" th:field="*{accommodation}"
-                                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                                <option value="">Select accommodation</option>
-                                <option th:each="acc : ${accommodations}"
-                                        th:value="${acc.id}"
-                                        th:text="${acc.name}">Accommodation Name</option>
-                            </select>
-                        </div>
                     </div>
 
                     <!-- Description Field -->
@@ -108,52 +96,11 @@
                                   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></textarea>
                     </div>
 
-                    <!-- Days Section -->
-                    <div id="daysContainer" class="space-y-6">
-                        <h2 class="text-lg font-medium text-gray-900">Daily Schedule</h2>
-                        <div th:each="day, dayStat : *{days}" class="bg-gray-50 p-6 rounded-lg">
-                            <div class="flex justify-between items-center mb-4">
-                                <h3 class="text-md font-medium" th:text="'Day ' + ${dayStat.count}">Day</h3>
-                                <button type="button" onclick="removeDay(this)"
-                                        class="text-red-600 hover:text-red-800">Remove Day</button>
-                            </div>
-                            <input type="hidden" th:field="*{days[__${dayStat.index}__].dayNumber}" th:value="${dayStat.count}">
-                            
-                            <div class="space-y-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">Daily Budget ($)</label>
-                                    <input type="number" th:field="*{days[__${dayStat.index}__].dailyBudget}" step="0.01"
-                                           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">Description</label>
-                                    <textarea th:field="*{days[__${dayStat.index}__].description}" rows="2"
-                                              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"></textarea>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">Notes</label>
-                                    <input type="text" th:field="*{days[__${dayStat.index}__].notes}"
-                                           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Add Day Button -->
-                    <div>
-                        <button type="button" onclick="addDay()"
-                                class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                            </svg>
-                            Add Day
-                        </button>
-                    </div>
 
                     <!-- Submit Button -->
                     <div class="flex justify-end">
-                        <button type="submit" 
-                                class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700">
+                        <button type="submit"
+                                class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                             Save Itinerary
                         </button>
                     </div>
@@ -162,21 +109,18 @@
         </div>
     </div>
 
-    <!-- JavaScript for Dynamic Days Management -->
     <script th:inline="javascript">
         function addDay() {
             const daysContainer = document.getElementById('daysContainer');
-            const dayCount = daysContainer.getElementsByClassName('bg-gray-50').length;
-            const newDayNumber = dayCount + 1;
-
-            const dayTemplate = `
-                <div class="bg-gray-50 p-6 rounded-lg mt-4">
+            const dayCount = daysContainer.querySelectorAll('.bg-gray-50').length;
+            const newDayHtml = `
+                <div class="bg-gray-50 p-6 rounded-lg">
                     <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-md font-medium">Day ${newDayNumber}</h3>
+                        <h3 class="text-md font-medium">Day ${dayCount + 1}</h3>
                         <button type="button" onclick="removeDay(this)"
                                 class="text-red-600 hover:text-red-800">Remove Day</button>
                     </div>
-                    <input type="hidden" name="days[${dayCount}].dayNumber" value="${newDayNumber}">
+                    <input type="hidden" name="days[${dayCount}].dayNumber" value="${dayCount + 1}">
                     
                     <div class="space-y-4">
                         <div>
@@ -197,8 +141,8 @@
                     </div>
                 </div>
             `;
-
-            daysContainer.insertAdjacentHTML('beforeend', dayTemplate);
+            daysContainer.insertAdjacentHTML('beforeend', newDayHtml);
+            updateDayNumbers();
         }
 
         function removeDay(button) {
@@ -214,16 +158,15 @@
                 day.querySelector('h3').textContent = `Day ${dayNumber}`;
                 day.querySelector('input[type="hidden"]').value = dayNumber;
                 
-                // Update all input names in this day
                 const inputs = day.querySelectorAll('input:not([type="hidden"]), textarea');
                 inputs.forEach(input => {
                     const name = input.getAttribute('name');
                     if (name) {
-                        input.setAttribute('name', name.replace(/days\[\d+\]/, `days[${index}]`));
+                        input.setAttribute('name', name.replace(/\[\d+\]/, `[${index}]`));
                     }
                 });
             });
         }
     </script>
 </body>
-</html> 
+</html>

@@ -2,6 +2,7 @@ package com.travelplanner.model;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "destinations")
@@ -16,6 +17,7 @@ public class Destination {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @Column(nullable = false)
     private String location;
 
     @Column(name = "avg_budget")
@@ -25,6 +27,12 @@ public class Destination {
 
     @Column(columnDefinition = "TEXT")
     private String attractions;
+
+    @OneToMany(mappedBy = "destination", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Itinerary> itineraries;
+
+    @OneToMany(mappedBy = "destination", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TripRecommendation> recommendations;
 
     // Getters and Setters
     public Long getId() {
@@ -82,4 +90,20 @@ public class Destination {
     public void setAttractions(String attractions) {
         this.attractions = attractions;
     }
-} 
+
+    public List<Itinerary> getItineraries() {
+        return itineraries;
+    }
+
+    public void setItineraries(List<Itinerary> itineraries) {
+        this.itineraries = itineraries;
+    }
+
+    public List<TripRecommendation> getRecommendations() {
+        return recommendations;
+    }
+
+    public void setRecommendations(List<TripRecommendation> recommendations) {
+        this.recommendations = recommendations;
+    }
+}

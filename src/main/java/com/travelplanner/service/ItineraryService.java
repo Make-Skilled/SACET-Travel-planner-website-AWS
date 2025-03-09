@@ -1,7 +1,6 @@
 package com.travelplanner.service;
 
 import com.travelplanner.model.Itinerary;
-import com.travelplanner.model.Activity;
 import java.util.List;
 
 public interface ItineraryService {
@@ -12,6 +11,4 @@ public interface ItineraryService {
     List<Itinerary> findByDestination(Long destinationId);
     List<Itinerary> findByBudget(Double maxBudget);
     List<Itinerary> findByTravelMode(String travelMode);
-    void addActivityToDay(Long itineraryId, Long dayNumber, Activity activity);
-    void removeActivityFromDay(Long itineraryId, Long dayNumber, Long activityId);
-} 
+}

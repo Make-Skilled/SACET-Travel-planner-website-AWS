@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/main :: html}">
+<head>
+    <title>Edit Recommendation</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <!-- Back Navigation -->
+        <div class="mb-6">
+            <a th:href="@{/recommendations/{id}(id=${recommendation.id})}" class="text-blue-600 hover:text-blue-800 flex items-center">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+                Back to Recommendation Details
+            </a>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg p-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-8">Edit Trip Recommendation</h1>
+
+            <form th:action="@{/recommendations/{id}(id=${recommendation.id})}" method="post" class="space-y-6">
+                <!-- Trip Type -->
+                <div>
+                    <label for="tripType" class="block text-sm font-medium text-gray-700">Trip Type</label>
+                    <select id="tripType" name="tripType" required
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <option value="LEISURE" th:selected="${recommendation.tripType == 'LEISURE'}">Leisure</option>
+                        <option value="BUSINESS" th:selected="${recommendation.tripType == 'BUSINESS'}">Business</option>
+                        <option value="ADVENTURE" th:selected="${recommendation.tripType == 'ADVENTURE'}">Adventure</option>
+                        <option value="CULTURAL" th:selected="${recommendation.tripType == 'CULTURAL'}">Cultural</option>
+                    </select>
+                </div>
+
+                <!-- Suitable For -->
+                <div>
+                    <label for="suitableFor" class="block text-sm font-medium text-gray-700">Suitable For</label>
+                    <select id="suitableFor" name="suitableFor" required
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <option value="SOLO" th:selected="${recommendation.suitableFor == 'SOLO'}">Solo Travelers</option>
+                        <option value="COUPLE" th:selected="${recommendation.suitableFor == 'COUPLE'}">Couples</option>
+                        <option value="FAMILY" th:selected="${recommendation.suitableFor == 'FAMILY'}">Families</option>
+                        <option value="GROUP" th:selected="${recommendation.suitableFor == 'GROUP'}">Groups</option>
+                    </select>
+                </div>
+
+                <!-- Best Time to Visit -->
+                <div>
+                    <label for="bestTimeToVisit" class="block text-sm font-medium text-gray-700">Best Time to Visit</label>
+                    <input type="text" id="bestTimeToVisit" name="bestTimeToVisit" th:value="${recommendation.bestTimeToVisit}"
+                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                </div>
+
+                <!-- Local Events -->
+                <div>
+                    <label for="localEvents" class="block text-sm font-medium text-gray-700">Local Events</label>
+                    <textarea id="localEvents" name="localEvents" rows="4"
+                              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                              th:text="${recommendation.localEvents}"></textarea>
+                </div>
+
+                <!-- Rating -->
+                <div>
+                    <label for="rating" class="block text-sm font-medium text-gray-700">Rating (1-5)</label>
+                    <input type="number" id="rating" name="rating" min="1" max="5" th:value="${recommendation.rating}"
+                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                </div>
+
+                <!-- Submit Button -->
+                <div class="flex justify-end space-x-4">
+                    <a th:href="@{/recommendations/{id}(id=${recommendation.id})}"
+                       class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+                        Cancel
+                    </a>
+                    <button type="submit"
+                            class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

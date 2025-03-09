@@ -2,8 +2,6 @@ package com.travelplanner.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "itineraries")
@@ -27,13 +25,6 @@ public class Itinerary {
     @ManyToOne
     @JoinColumn(name = "destination_id")
     private Destination destination;
-
-    @OneToMany(mappedBy = "itinerary", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ItineraryDay> days = new ArrayList<>();
-
-    @ManyToOne
-    @JoinColumn(name = "accommodation_id")
-    private Accommodation accommodation;
 
     @Column(name = "total_budget")
     private Double totalBudget;
@@ -92,32 +83,6 @@ public class Itinerary {
         this.destination = destination;
     }
 
-    public List<ItineraryDay> getDays() {
-        return days;
-    }
-
-    public void setDays(List<ItineraryDay> days) {
-        this.days = days;
-    }
-
-    public void addDay(ItineraryDay day) {
-        days.add(day);
-        day.setItinerary(this);
-    }
-
-    public void removeDay(ItineraryDay day) {
-        days.remove(day);
-        day.setItinerary(null);
-    }
-
-    public Accommodation getAccommodation() {
-        return accommodation;
-    }
-
-    public void setAccommodation(Accommodation accommodation) {
-        this.accommodation = accommodation;
-    }
-
     public Double getTotalBudget() {
         return totalBudget;
     }
@@ -141,4 +106,4 @@ public class Itinerary {
     public void setPreferences(String preferences) {
         this.preferences = preferences;
     }
-} 
+}

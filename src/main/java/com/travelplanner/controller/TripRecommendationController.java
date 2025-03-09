@@ -8,8 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-
 @Controller
 @RequestMapping("/recommendations")
 public class TripRecommendationController {
@@ -21,41 +19,8 @@ public class TripRecommendationController {
     private DestinationService destinationService;
 
     @GetMapping
-    public String listRecommendations(
-            @RequestParam(required = false) String tripType,
-            @RequestParam(required = false) String suitableFor,
-            @RequestParam(required = false) BigDecimal maxBudget,
-            @RequestParam(required = false) Integer maxDuration,
-            @RequestParam(required = false) Integer minRating,
-            Model model) {
-        
-        if (tripType != null) {
-            model.addAttribute("recommendations", recommendationService.findByTripType(tripType));
-        } else if (suitableFor != null) {
-            model.addAttribute("recommendations", recommendationService.findBySuitableFor(suitableFor));
-        } else if (maxBudget != null) {
-            model.addAttribute("recommendations", recommendationService.findByMaxBudget(maxBudget));
-        } else if (maxDuration != null) {
-            model.addAttribute("recommendations", recommendationService.findByMaxDuration(maxDuration));
-        } else if (minRating != null) {
-            model.addAttribute("recommendations", recommendationService.findByMinRating(minRating));
-        } else {
-            model.addAttribute("recommendations", recommendationService.getAllRecommendations());
-        }
-
-        return "recommendations/list";
-    }
-
-    @GetMapping("/personalized")
-    public String getPersonalizedRecommendations(
-            @RequestParam String preferences,
-            @RequestParam BigDecimal budget,
-            @RequestParam Integer duration,
-            Model model) {
-        
-        model.addAttribute("recommendations", 
-            recommendationService.getPersonalizedRecommendations(preferences, budget, duration));
-        model.addAttribute("isPersonalized", true);
+    public String listRecommendations(Model model) {
+        model.addAttribute("recommendations", recommendationService.getAllRecommendations());
         return "recommendations/list";
     }
 
@@ -69,25 +34,33 @@ public class TripRecommendationController {
     public String newRecommendationForm(Model model) {
         model.addAttribute("recommendation", new TripRecommendation());
         model.addAttribute("destinations", destinationService.getAllDestinations());
-        return "recommendations/form";
+        return "recommendations/new";
+    }
+
+    @PostMapping
+    public String createRecommendation(@ModelAttribute TripRecommendation recommendation) {
+        recommendationService.saveRecommendation(recommendation);
+        return "redirect:/recommendations";
     }
 
     @GetMapping("/{id}/edit")
     public String editRecommendationForm(@PathVariable Long id, Model model) {
         model.addAttribute("recommendation", recommendationService.getRecommendationById(id));
         model.addAttribute("destinations", destinationService.getAllDestinations());
-        return "recommendations/form";
+        return "recommendations/edit";
     }
 
-    @PostMapping
-    public String saveRecommendation(@ModelAttribute TripRecommendation recommendation) {
+    @PostMapping("/{id}")
+    public String updateRecommendation(@PathVariable Long id, @ModelAttribute TripRecommendation recommendation) {
+        recommendation.setId(id);
         recommendationService.saveRecommendation(recommendation);
-        return "redirect:/recommendations";
+        return "redirect:/recommendations/" + id;
     }
 
-    @PostMapping("/{id}/delete")
+    @DeleteMapping("/{id}")
+    @ResponseBody
     public String deleteRecommendation(@PathVariable Long id) {
         recommendationService.deleteRecommendation(id);
-        return "redirect:/recommendations";
+        return "success";
     }
-} 
+}
