@@ -14,115 +14,31 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex">
-                    <!-- Logo -->
-                    <div class="flex-shrink-0 flex items-center">
-                        <a href="/" class="text-2xl font-bold text-blue-600">Travel Planner</a>
-                    </div>
-
-                    <!-- Navigation Links -->
-                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-                        <a href="/recommendations" 
-                           class="inline-flex items-center px-1 pt-1 text-gray-500 hover:text-gray-900">
-                            Recommendations
-                        </a>
-                        <a href="/itineraries" 
-                           class="inline-flex items-center px-1 pt-1 text-gray-500 hover:text-gray-900">
-                            Itineraries
-                        </a>
-                        <a href="/destinations" 
-                           class="inline-flex items-center px-1 pt-1 text-gray-500 hover:text-gray-900">
-                            Destinations
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Right side navigation items -->
-                <div class="hidden sm:ml-6 sm:flex sm:items-center">
-                    <a href="/itineraries/new" 
-                       class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
-                        Create Itinerary
+                    <a href="/" class="flex items-center">
+                        <span class="text-xl font-bold text-blue-600">Travel Planner</span>
                     </a>
                 </div>
-
-                <!-- Mobile menu button -->
-                <div class="flex items-center sm:hidden">
-                    <button type="button" 
-                            class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100"
-                            onclick="toggleMobileMenu()">
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                        </svg>
-                    </button>
+                <div class="flex items-center">
+                    <a href="/destinations" class="px-3 py-2 text-gray-700 hover:text-blue-600">Destinations</a>
+                    <a href="/itineraries" class="px-3 py-2 text-gray-700 hover:text-blue-600">Itineraries</a>
+                    <a href="/recommendations" class="px-3 py-2 text-gray-700 hover:text-blue-600">Recommendations</a>
                 </div>
-            </div>
-        </div>
-
-        <!-- Mobile menu -->
-        <div class="sm:hidden hidden" id="mobileMenu">
-            <div class="pt-2 pb-3 space-y-1">
-                <a href="/recommendations" 
-                   class="block pl-3 pr-4 py-2 text-base font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50">
-                    Recommendations
-                </a>
-                <a href="/itineraries" 
-                   class="block pl-3 pr-4 py-2 text-base font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50">
-                    Itineraries
-                </a>
-                <a href="/destinations" 
-                   class="block pl-3 pr-4 py-2 text-base font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50">
-                    Destinations
-                </a>
-                <a href="/itineraries/new" 
-                   class="block pl-3 pr-4 py-2 text-base font-medium text-blue-600 hover:text-blue-800">
-                    Create Itinerary
-                </a>
             </div>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+    <main class="container mx-auto px-4 py-8">
         <div th:replace="~{::content}">
-            <!-- Content will be replaced here -->
+            <!-- Content will be inserted here -->
         </div>
     </main>
 
     <!-- Footer -->
-    <footer class="bg-white border-t mt-12">
-        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div class="col-span-2">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">About Travel Planner</h3>
-                    <p class="text-gray-600">Your ultimate companion for planning perfect trips. Get personalized recommendations, create detailed itineraries, and explore amazing destinations.</p>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Links</h3>
-                    <ul class="space-y-2">
-                        <li><a href="/recommendations" class="text-gray-600 hover:text-gray-900">Recommendations</a></li>
-                        <li><a href="/itineraries" class="text-gray-600 hover:text-gray-900">Itineraries</a></li>
-                        <li><a href="/destinations" class="text-gray-600 hover:text-gray-900">Destinations</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Contact</h3>
-                    <ul class="space-y-2">
-                        <li class="text-gray-600">Email: info@travelplanner.com</li>
-                        <li class="text-gray-600">Phone: (555) 123-4567</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="mt-8 pt-8 border-t text-center text-gray-500">
-                <p>&copy; 2024 Travel Planner. All rights reserved.</p>
-            </div>
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <p class="text-center">&copy; 2025 Travel Planner. All rights reserved.</p>
         </div>
     </footer>
-
-    <!-- JavaScript for mobile menu -->
-    <script>
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobileMenu');
-            menu.classList.toggle('hidden');
-        }
-    </script>
 </body>
 </html> 

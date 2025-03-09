@@ -23,6 +23,14 @@ public class User {
     @Column(name = "preferences")
     private String preferences;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role = Role.USER;
+
+    public enum Role {
+        USER, ADMIN
+    }
+
     // Getters and Setters
     public Long getId() {
         return id;
@@ -63,4 +71,12 @@ public class User {
     public void setPreferences(String preferences) {
         this.preferences = preferences;
     }
-} 
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+}
